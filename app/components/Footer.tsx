@@ -13,7 +13,7 @@ export default function Footer() {
         <div className="flex flex-col items-center gap-2 mb-4">
           <Heart className="h-6 w-6 text-red-500 fill-current animate-pulse-slow" />
           <p className="text-md font-medium text-foreground">
-            Created with love only for saif and sahel by{" "}
+            Created with love for all users by{" "}
             <a
               href="https://github.com/fyzanshaik"
               target="_blank"
