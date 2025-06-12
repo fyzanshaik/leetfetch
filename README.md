@@ -1,36 +1,28 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LeetFetch - LeetCode API Explorer
 
-## Getting Started
+## 🌟 What is LeetFetch?
 
-First, run the development server:
+LeetFetch is a simple, interactive tool that lets you explore and test LeetCode's behind-the-scenes data. Think of it as a playground where you can query LeetCode's GraphQL API, see the raw data, and even get ready-to-use code snippets for your own projects.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Built With
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Next.js:** For a fast and modern web experience.
+- **TypeScript:** To keep the code reliable and error-free.
+- **Tailwind CSS:** For stylish and responsive design.
+- **Shadcn/ui:** For beautiful, reusable UI components.
+- Other tools like Lucide React for icons and Sonner for notifications.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📦 How to Use
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1.  **Clone the project:** `git clone https://github.com/fyzanshaik/LeetFetch.git`
+2.  **Go into the folder:** `cd LeetFetch`
+3.  **Install dependencies:** `npm install` (or `yarn install`, `pnpm install`)
+4.  **Start the app:** `npm run dev`
 
-## Learn More
+    Then, open [http://localhost:3000](http://localhost:3000) in your browser.
 
-To learn more about Next.js, take a look at the following resources:
+Just type in a LeetCode username (like `fyzxnshxik`), pick an API, and hit "Test API" to see it in action! You can also switch themes and see code in different languages.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 💬 Feedback & Reviews
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Got ideas, comments, or just want to share your thoughts? Feel free to open an issue on GitHub! Your feedback helps make LeetFetch better.
