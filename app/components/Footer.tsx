@@ -1,4 +1,4 @@
-import { ExternalLink, Github, Heart, Twitter } from "lucide-react";
+import { ExternalLink, Github, Twitter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function Footer() {
@@ -11,7 +11,7 @@ export default function Footer() {
 
       <div className="container mx-auto px-4 text-center relative z-10">
         <div className="flex flex-col items-center gap-2 mb-4">
-          <Heart className="h-6 w-6 text-red-500 fill-current animate-pulse-slow" />
+
           <p className="text-md font-medium text-foreground">
             Created with ❤️ by{" "}
             <a
@@ -29,8 +29,8 @@ export default function Footer() {
         <div className="flex justify-center gap-3 mb-6">
           <Button
             asChild
-            variant="ghost" 
-            size="sm" 
+            variant="ghost"
+            size="sm"
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent/20 transition-all duration-200"
           >
             <a
@@ -62,7 +62,7 @@ export default function Footer() {
         </div>
 
         <div className="pt-6 border-t border-border/50 text-xs text-muted-foreground">
-          © {new Date().getFullYear()} CodeQuery. All rights reserved.
+          © {new Date().getFullYear()} LeetFetch. All rights reserved.
         </div>
       </div>
     </footer>
