@@ -17,11 +17,10 @@ export default function Header() {
           <Sparkles className="h-12 w-12 md:h-16 md:w-16 text-yellow-400 animate-spin-slow" />
         </h1>
         <p className="text-lg md:text-xl text-slate-700 dark:text-slate-300 max-w-3xl mx-auto font-medium leading-relaxed">
-          Unlock LeetCode insights with our interactive API explorer. Generate{" "}
+          Unlock LeetCode insights with an interactive API explorer. Get{" "}
           <strong className="text-orange-500">code snippets</strong>, test{" "}
           <strong className="text-red-500">GraphQL endpoints</strong>, and view{" "}
-          <strong className="text-blue-500">real-time data</strong> in multiple
-          languages.
+          <strong className="text-blue-500">real-time data</strong>
         </p>
 
         <div className="flex items-center justify-center gap-3 mt-8 flex-wrap">
