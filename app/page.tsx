@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { toast } from "sonner";
 import {
   endpoints,
@@ -24,128 +24,152 @@ export default function CodeQueryApp() {
   const [showLimitedEndpoints, setShowLimitedEndpoints] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const displayedEndpoints: Endpoint[] = [
-    ...endpoints,
-    ...(showLimitedEndpoints ? limitedEndpoints : []),
-  ];
+  // Memoize expensive computations
+  const displayedEndpoints = useMemo(
+    () => [...endpoints, ...(showLimitedEndpoints ? limitedEndpoints : [])],
+    [showLimitedEndpoints],
+  );
 
-  const allCategories = [
-    ...new Set(displayedEndpoints.map((e) => e.category)),
-  ].sort();
+  const allCategories = useMemo(
+    () => [...new Set(displayedEndpoints.map((e) => e.category))].sort(),
+    [displayedEndpoints],
+  );
 
-  const filteredEndpoints: Endpoint[] = selectedCategory
-    ? displayedEndpoints.filter(
-        (endpoint) => endpoint.category === selectedCategory,
-      )
-    : displayedEndpoints;
+  const filteredEndpoints = useMemo(
+    () =>
+      selectedCategory
+        ? displayedEndpoints.filter(
+            (endpoint) => endpoint.category === selectedCategory,
+          )
+        : displayedEndpoints,
+    [displayedEndpoints, selectedCategory],
+  );
 
-  const executeQuery = async (endpoint: Endpoint) => {
-    if (endpoint.requiresAuth) {
-      toast.error("Authentication Required", {
-        description:
-          "This endpoint requires authentication which is not supported in this demo.",
-      });
-      return;
-    }
+  // Memoize callback functions for UserInput
+  const handleUsernameChange = useCallback((value: string) => {
+    setUsername(value);
+  }, []);
 
-    const requiresUsername = Object.keys(endpoint.variables).includes(
-      "username",
-    );
+  const handleShowLimitedEndpointsToggle = useCallback((value: boolean) => {
+    setShowLimitedEndpoints(value);
+  }, []);
 
-    if (!username.trim() && requiresUsername) {
-      toast.error("Username Required", {
-        description: "Please enter a username to test this API endpoint",
-      });
-      return;
-    }
+  // Memoize callback functions for CategoryFilters
+  const handleCategoryChange = useCallback((category: string | null) => {
+    setSelectedCategory(category);
+  }, []);
 
-    setLoading((prev) => ({ ...prev, [endpoint.id]: true }));
-
-    try {
-      let variables: Record<string, string | number> = {};
-
-      switch (endpoint.id) {
-        case "problemProgress":
-          variables = { userSlug: username };
-          break;
-        case "recentSubmissions":
-          variables = { username, limit: 20 };
-          break;
-        case "challengeMedal":
-          variables = {
-            year: new Date().getFullYear(),
-            month: new Date().getMonth() + 1,
-          };
-          break;
-        case "streakCounter":
-        case "currentTimestamp":
-        case "dailyChallenge":
-        case "upcomingContests":
-          variables = {};
-          break;
-        default:
-          if (requiresUsername) {
-            variables = { username };
-          }
+  // Memoize main callback functions
+  const executeQuery = useCallback(
+    async (endpoint: Endpoint) => {
+      if (endpoint.requiresAuth) {
+        toast.error("Authentication Required", {
+          description:
+            "This endpoint requires authentication which is not supported in this demo.",
+        });
+        return;
       }
 
-      const response = await fetch("/api/leetcode", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: endpoint.graphql,
-          variables,
-          operationName: endpoint.query,
-        }),
-      });
+      const requiresUsername = Object.keys(endpoint.variables).includes(
+        "username",
+      );
 
-      const data = await response.json();
-
-      if (
-        "errors" in data &&
-        Array.isArray(data.errors) &&
-        data.errors.length > 0
-      ) {
-        throw new Error(data.errors[0]?.message || "GraphQL error occurred");
+      if (!username.trim() && requiresUsername) {
+        toast.error("Username Required", {
+          description: "Please enter a username to test this API endpoint",
+        });
+        return;
       }
 
-      setResponses((prev) => ({ ...prev, [endpoint.id]: data }));
+      setLoading((prev) => ({ ...prev, [endpoint.id]: true }));
 
-      toast.success("Query Executed", {
-        description: `Successfully fetched ${endpoint.name}`,
-      });
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Unknown error occurred";
+      try {
+        let variables: Record<string, string | number> = {};
 
-      toast.error("API Error", {
-        description: `Failed to fetch ${endpoint.name}: ${errorMessage}`,
-      });
+        switch (endpoint.id) {
+          case "problemProgress":
+            variables = { userSlug: username };
+            break;
+          case "recentSubmissions":
+            variables = { username, limit: 20 };
+            break;
+          case "challengeMedal":
+            variables = {
+              year: new Date().getFullYear(),
+              month: new Date().getMonth() + 1,
+            };
+            break;
+          case "streakCounter":
+          case "currentTimestamp":
+          case "dailyChallenge":
+          case "upcomingContests":
+            variables = {};
+            break;
+          default:
+            if (requiresUsername) {
+              variables = { username };
+            }
+        }
 
-      setResponses((prev) => ({
-        ...prev,
-        [endpoint.id]: {
-          error: true,
-          message: errorMessage,
-          details:
-            "This might be due to network issues, the user not existing on LeetCode, or the endpoint requiring authentication.",
-        } as ErrorResponse,
-      }));
+        const response = await fetch("/api/leetcode", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            query: endpoint.graphql,
+            variables,
+            operationName: endpoint.query,
+          }),
+        });
 
-      console.error("Error:", error);
-    } finally {
-      setLoading((prev) => ({ ...prev, [endpoint.id]: false }));
-    }
-  };
+        const data = await response.json();
 
-  const copyToClipboard = (text: string) => {
+        if (
+          "errors" in data &&
+          Array.isArray(data.errors) &&
+          data.errors.length > 0
+        ) {
+          throw new Error(data.errors[0]?.message || "GraphQL error occurred");
+        }
+
+        setResponses((prev) => ({ ...prev, [endpoint.id]: data }));
+
+        toast.success("Query Executed", {
+          description: `Successfully fetched ${endpoint.name}`,
+        });
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : "Unknown error occurred";
+
+        toast.error("API Error", {
+          description: `Failed to fetch ${endpoint.name}: ${errorMessage}`,
+        });
+
+        setResponses((prev) => ({
+          ...prev,
+          [endpoint.id]: {
+            error: true,
+            message: errorMessage,
+            details:
+              "This might be due to network issues, the user not existing on LeetCode, or the endpoint requiring authentication.",
+          } as ErrorResponse,
+        }));
+
+        console.error("Error:", error);
+      } finally {
+        setLoading((prev) => ({ ...prev, [endpoint.id]: false }));
+      }
+    },
+    [username],
+  );
+
+  const copyToClipboard = useCallback((text: string) => {
     navigator.clipboard.writeText(text);
     toast("Copied", {
       description: "Code snippet copied to clipboard",
     });
-  };
+  }, []);
 
   return (
     <div className="min-h-screen text-foreground relative overflow-hidden">
@@ -180,9 +204,9 @@ export default function CodeQueryApp() {
 
         <UserInput
           username={username}
-          setUsername={setUsername}
+          setUsername={handleUsernameChange}
           displayedEndpoints={displayedEndpoints}
-          setShowLimitedEndpoints={setShowLimitedEndpoints}
+          setShowLimitedEndpoints={handleShowLimitedEndpointsToggle}
           showLimitedEndpoints={showLimitedEndpoints}
         />
 
@@ -193,7 +217,7 @@ export default function CodeQueryApp() {
           <CategoryFilters
             categories={allCategories}
             selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
+            setSelectedCategory={handleCategoryChange}
           />
         </div>
 

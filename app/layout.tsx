@@ -1,3 +1,4 @@
+// import { ReactScan } from "./components/ReactScan";
 import type React from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -40,6 +41,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning className={inter.variable}>
+      {/* <ReactScan /> */}
       <body
         className={`${inter.className} antialiased bg-background text-foreground`}
       >

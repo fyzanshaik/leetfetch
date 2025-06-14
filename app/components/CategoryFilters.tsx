@@ -1,5 +1,5 @@
-import React from "react";
-import { Button } from "@/components/ui/button"; 
+import React, { memo } from "react";
+import { Button } from "@/components/ui/button";
 
 interface CategoryFiltersProps {
   categories: string[];
@@ -7,11 +7,11 @@ interface CategoryFiltersProps {
   setSelectedCategory: (category: string | null) => void;
 }
 
-const CategoryFilters: React.FC<CategoryFiltersProps> = ({
+const CategoryFilters = memo(function CategoryFilters({
   categories,
   selectedCategory,
   setSelectedCategory,
-}) => {
+}: CategoryFiltersProps) {
   return (
     <div className="mb-8 p-4 bg-card rounded-lg shadow-sm">
       <div className="flex flex-wrap gap-2">
@@ -35,6 +35,6 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
       </div>
     </div>
   );
-};
+});
 
 export default CategoryFilters;

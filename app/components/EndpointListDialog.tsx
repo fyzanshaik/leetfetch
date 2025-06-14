@@ -11,13 +11,15 @@ import { Endpoint } from "@/lib/api";
 import { List as ListIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { memo } from "react";
 
 interface EndpointListDialogProps {
   endpoints: Endpoint[];
 }
 
-export function EndpointListDialog({ endpoints }: EndpointListDialogProps) {
+export const EndpointListDialog = memo(function EndpointListDialog({
+  endpoints,
+}: EndpointListDialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -66,4 +68,4 @@ export function EndpointListDialog({ endpoints }: EndpointListDialogProps) {
       </DialogContent>
     </Dialog>
   );
-}
+});

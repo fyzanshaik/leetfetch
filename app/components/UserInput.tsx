@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch, SetStateAction } from "react";
+import { memo, useState, useEffect, useCallback } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,19 +17,44 @@ import { EndpointListDialog } from "./EndpointListDialog";
 
 interface UserInputProps {
   username: string;
-  setUsername: Dispatch<SetStateAction<string>>;
+  setUsername: (value: string) => void;
   displayedEndpoints: Endpoint[];
-  setShowLimitedEndpoints: Dispatch<SetStateAction<boolean>>;
+  setShowLimitedEndpoints: (value: boolean) => void;
   showLimitedEndpoints: boolean;
 }
 
-export default function UserInput({
+const UserInput = memo(function UserInput({
   username,
   setUsername,
   displayedEndpoints,
   setShowLimitedEndpoints,
   showLimitedEndpoints,
 }: UserInputProps) {
+  const [localUsername, setLocalUsername] = useState(username);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (localUsername !== username) {
+        setUsername(localUsername);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [localUsername, username, setUsername]);
+
+  useEffect(() => {
+    if (username !== localUsername) {
+      setLocalUsername(username);
+    }
+  }, [username, localUsername]);
+
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setLocalUsername(e.target.value);
+    },
+    [],
+  );
+
   return (
     <Card className="mb-8 border-2 border-orange-200 dark:border-orange-800">
       <CardHeader>
@@ -45,12 +70,11 @@ export default function UserInput({
         <div className="flex flex-col md:flex-row gap-4 mb-4">
           <Input
             placeholder="fyzxnshxik"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={localUsername}
+            onChange={handleInputChange}
             className="flex-1"
           />
           <div className="flex gap-2 flex-wrap items-center">
-            {" "}
             <Badge variant="secondary" className="px-3 py-2">
               {displayedEndpoints.length} Endpoints Available
             </Badge>
@@ -65,7 +89,7 @@ export default function UserInput({
                 ? "Hide Limited Endpoints"
                 : "Show All Endpoints"}
             </Button>
-            <EndpointListDialog endpoints={displayedEndpoints} />{" "}
+            <EndpointListDialog endpoints={displayedEndpoints} />
           </div>
         </div>
         <p className="text-sm text-muted-foreground mt-2">
@@ -79,4 +103,6 @@ export default function UserInput({
       </CardContent>
     </Card>
   );
-}
+});
+
+export default UserInput;

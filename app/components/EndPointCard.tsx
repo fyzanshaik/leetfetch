@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { memo, useMemo } from "react";
 import {
   Card,
   CardContent,
@@ -30,81 +30,147 @@ interface EndpointCardProps {
   copyToClipboard: (text: string) => void;
 }
 
-const EndpointCard: React.FC<EndpointCardProps> = ({
+const CodeBlock = memo(function CodeBlock({
+  code,
+  language,
+  showCopy = true,
+  onCopy,
+}: {
+  code: string;
+  language: string;
+  showCopy?: boolean;
+  onCopy: (code: string) => void;
+}) {
+  const highlighterLanguage = useMemo(() => {
+    switch (language) {
+      case "typescript":
+        return "tsx";
+      case "python":
+        return "python";
+      case "golang":
+        return "go";
+      case "cpp":
+        return "cpp";
+      default:
+        return "graphql";
+    }
+  }, [language]);
+
+  const codeBlockBackground = useMemo(
+    () => String(dracula['pre[class*="language-"]'].background),
+    [],
+  );
+
+  const lineNumberColor = useMemo(
+    () => String(dracula['code[class*="language-"]'].color) + "80",
+    [],
+  );
+
+  const customStyle = useMemo(
+    () => ({
+      borderRadius: "0.5rem",
+      padding: "1.25rem",
+      fontSize: "0.875rem",
+      lineHeight: "1.5",
+      fontFamily: "var(--font-mono)",
+      backgroundColor: codeBlockBackground,
+      border: `1px solid ${codeBlockBackground}80`,
+      boxShadow: `0 4px 10px rgba(0,0,0,0.3)`,
+    }),
+    [codeBlockBackground],
+  );
+
+  const lineNumberStyle = useMemo(
+    () => ({
+      color: lineNumberColor,
+      minWidth: "2.5em",
+      paddingRight: "1em",
+      userSelect: "none" as const,
+      backgroundColor: codeBlockBackground,
+    }),
+    [lineNumberColor, codeBlockBackground],
+  );
+
+  return (
+    <div className="relative group">
+      <SyntaxHighlighter
+        language={highlighterLanguage}
+        style={dracula}
+        showLineNumbers={true}
+        wrapLines={true}
+        customStyle={customStyle}
+        lineNumberStyle={lineNumberStyle}
+      >
+        {code}
+      </SyntaxHighlighter>
+      {showCopy && (
+        <Button
+          size="sm"
+          variant="ghost"
+          className="absolute top-2 right-2 text-white/50 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          onClick={() => onCopy(code)}
+          aria-label="Copy code"
+        >
+          <Copy className="h-4 w-4" />
+        </Button>
+      )}
+    </div>
+  );
+});
+
+const EndpointCard = memo(function EndpointCard({
   endpoint,
   username,
   loading,
   responses,
   executeQuery,
   copyToClipboard,
-}) => {
+}: EndpointCardProps) {
   const IconComponent = endpoint.icon;
   const currentResponse = responses[endpoint.id];
   const isLoading = loading[endpoint.id];
 
-  const CodeBlock: React.FC<{
-    code: string;
-    language: string;
-    showCopy?: boolean;
-  }> = ({ code, language, showCopy = true }) => {
-    const highlighterLanguage =
-      language === "typescript"
-        ? "tsx"
-        : language === "python"
-          ? "python"
-          : language === "golang"
-            ? "go"
-            : language === "cpp"
-              ? "cpp"
-              : "graphql";
+  const codeSnippets = useMemo(
+    () => ({
+      typescript: generateCodeSnippet(endpoint, "typescript", username),
+      python: generateCodeSnippet(endpoint, "python", username),
+      golang: generateCodeSnippet(endpoint, "golang", username),
+      cpp: generateCodeSnippet(endpoint, "cpp", username),
+    }),
+    [endpoint, username],
+  );
 
-    const codeBlockBackground: string = String(
-      dracula['pre[class*="language-"]'].background,
-    );
-    const lineNumberColor: string =
-      String(dracula['code[class*="language-"]'].color) + "80";
+  const isErrorResponse = useMemo(
+    () =>
+      currentResponse &&
+      "error" in currentResponse &&
+      (currentResponse as ErrorResponse).error,
+    [currentResponse],
+  );
 
-    return (
-      <div className="relative group">
-        <SyntaxHighlighter
-          language={highlighterLanguage}
-          style={dracula}
-          showLineNumbers={true}
-          wrapLines={true}
-          customStyle={{
-            borderRadius: "0.5rem",
-            padding: "1.25rem",
-            fontSize: "0.875rem",
-            lineHeight: "1.5",
-            fontFamily: "var(--font-mono)",
-            backgroundColor: codeBlockBackground,
-            border: `1px solid ${codeBlockBackground}80`,
-            boxShadow: `0 4px 10px rgba(0,0,0,0.3)`,
-          }}
-          lineNumberStyle={{
-            color: lineNumberColor,
-            minWidth: "2.5em",
-            paddingRight: "1em",
-            userSelect: "none",
-            backgroundColor: codeBlockBackground,
-          }}
-        >
-          {code}
-        </SyntaxHighlighter>
-        {showCopy && (
-          <Button
-            size="sm"
-            variant="ghost"
-            className="absolute top-2 right-2 text-white/50 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-            onClick={() => copyToClipboard(code)}
-            aria-label="Copy code"
-          >
-            <Copy className="h-4 w-4" />
-          </Button>
-        )}
-      </div>
-    );
-  };
+  const formattedResponse = useMemo(
+    () =>
+      currentResponse && !isErrorResponse
+        ? JSON.stringify(currentResponse, null, 2)
+        : "",
+    [currentResponse, isErrorResponse],
+  );
+
+  const languages = useMemo(
+    () => ["typescript", "python", "golang", "cpp", "graphql"],
+    [],
+  );
+
+  const tabLabels = useMemo(
+    () => ({
+      typescript: "TS",
+      python: "Py",
+      golang: "Go",
+      cpp: "C++",
+      graphql: "GraphQL",
+    }),
+    [],
+  );
 
   return (
     <Card
@@ -134,7 +200,6 @@ const EndpointCard: React.FC<EndpointCardProps> = ({
             <IconComponent className="h-6 w-6 text-orange-700 dark:text-orange-300" />
           </div>
           <div className="flex flex-col min-w-0">
-            {" "}
             <CardTitle className="text-xl font-extrabold flex items-center gap-2 mb-1">
               {endpoint.name}
               {endpoint.requiresAuth && (
@@ -173,7 +238,7 @@ const EndpointCard: React.FC<EndpointCardProps> = ({
             min-w-[120px] h-10 px-5 text-base font-semibold rounded-full
             bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-2 focus:ring-primary/50
             shadow-md transition-all duration-300 transform active:scale-95
-            flex-shrink-0 // Essential to prevent the button from shrinking
+            flex-shrink-0
           `}
         >
           {isLoading ? (
@@ -189,40 +254,36 @@ const EndpointCard: React.FC<EndpointCardProps> = ({
         <Tabs defaultValue="typescript" className="w-full">
           <TabsList
             className="grid w-full grid-cols-2 md:grid-cols-5 h-auto rounded-lg
-             bg-muted text-muted-foreground p-1 gap-1
-             "
+             bg-muted text-muted-foreground p-1 gap-1"
           >
-            {["typescript", "python", "golang", "cpp", "graphql"].map((tab) => (
+            {languages.map((tab) => (
               <TabsTrigger
                 key={tab}
                 value={tab}
                 className="h-9 text-sm rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground
                   transition-colors duration-200"
               >
-                {tab === "typescript"
-                  ? "TS"
-                  : tab === "python"
-                    ? "Py"
-                    : tab === "golang"
-                      ? "Go"
-                      : tab === "cpp"
-                        ? "C++"
-                        : "GraphQL"}
+                {tabLabels[tab as keyof typeof tabLabels]}
               </TabsTrigger>
             ))}
           </TabsList>
 
-          {["typescript", "python", "golang", "cpp"].map((lang) => (
+          {(["typescript", "python", "golang", "cpp"] as const).map((lang) => (
             <TabsContent key={lang} value={lang} className="mt-4">
               <CodeBlock
-                code={generateCodeSnippet(endpoint, lang, username)}
+                code={codeSnippets[lang]}
                 language={lang}
+                onCopy={copyToClipboard}
               />
             </TabsContent>
           ))}
 
           <TabsContent value="graphql" className="mt-4">
-            <CodeBlock code={endpoint.graphql} language="graphql" />
+            <CodeBlock
+              code={endpoint.graphql}
+              language="graphql"
+              onCopy={copyToClipboard}
+            />
           </TabsContent>
         </Tabs>
 
@@ -235,17 +296,12 @@ const EndpointCard: React.FC<EndpointCardProps> = ({
                   <Code className="h-5 w-5" />
                   API Response
                 </h4>
-                {"error" in currentResponse &&
-                (currentResponse as ErrorResponse).error ? null : (
+                {!isErrorResponse && (
                   <Button
                     size="sm"
                     variant="ghost"
                     className="text-muted-foreground hover:text-primary"
-                    onClick={() =>
-                      copyToClipboard(
-                        String(JSON.stringify(currentResponse, null, 2)),
-                      )
-                    }
+                    onClick={() => copyToClipboard(formattedResponse)}
                     aria-label="Copy response"
                   >
                     <Copy className="h-4 w-4 mr-1" />
@@ -253,8 +309,7 @@ const EndpointCard: React.FC<EndpointCardProps> = ({
                   </Button>
                 )}
               </div>
-              {"error" in currentResponse &&
-              (currentResponse as ErrorResponse).error ? (
+              {isErrorResponse ? (
                 <Alert
                   variant="destructive"
                   className="flex items-start p-3 rounded-lg"
@@ -280,9 +335,7 @@ const EndpointCard: React.FC<EndpointCardProps> = ({
                     </div>
                   ) : (
                     <pre className="bg-background text-foreground p-4 text-sm overflow-x-auto font-mono">
-                      <code>
-                        {String(JSON.stringify(currentResponse, null, 2))}
-                      </code>
+                      <code>{formattedResponse}</code>
                     </pre>
                   )}
                 </ScrollArea>
@@ -307,6 +360,6 @@ const EndpointCard: React.FC<EndpointCardProps> = ({
       </CardContent>
     </Card>
   );
-};
+});
 
 export default EndpointCard;
