@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 export default function Footer() {
   return (
-    <footer className="mt-2 py-8  border-border bg-black relative overflow-hidden">
+    <footer className="mt-2 py-8 border-t border-border bg-background relative overflow-hidden">
       <div className="absolute inset-0 z-0 opacity-10">
         <div className="w-48 h-48 bg-primary/20 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob-small top-0 left-1/4"></div>
         <div className="w-48 h-48 bg-accent/20 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob-small animation-delay-2000 bottom-0 right-1/4"></div>
