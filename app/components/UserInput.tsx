@@ -46,7 +46,7 @@ const UserInput = memo(function UserInput({
     if (username !== localUsername) {
       setLocalUsername(username);
     }
-  }, [username, localUsername]);
+  }, [username]);
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
