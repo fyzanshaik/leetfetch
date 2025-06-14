@@ -9,9 +9,7 @@ import {
   ApiResponse,
   ErrorResponse,
 } from "@/lib/api";
-import Header from "./components/Header";
 import UserInput from "./components/UserInput";
-import Footer from "./components/Footer";
 import CategoryFilters from "./components/CategoryFilters";
 import EndpointCard from "./components/EndPointCard";
 import ApiDocDialog from "./components/ApiDocDialog";
@@ -24,7 +22,6 @@ export default function CodeQueryApp() {
   const [showLimitedEndpoints, setShowLimitedEndpoints] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  // Memoize expensive computations
   const displayedEndpoints = useMemo(
     () => [...endpoints, ...(showLimitedEndpoints ? limitedEndpoints : [])],
     [showLimitedEndpoints],
@@ -45,7 +42,6 @@ export default function CodeQueryApp() {
     [displayedEndpoints, selectedCategory],
   );
 
-  // Memoize callback functions for UserInput
   const handleUsernameChange = useCallback((value: string) => {
     setUsername(value);
   }, []);
@@ -54,12 +50,10 @@ export default function CodeQueryApp() {
     setShowLimitedEndpoints(value);
   }, []);
 
-  // Memoize callback functions for CategoryFilters
   const handleCategoryChange = useCallback((category: string | null) => {
     setSelectedCategory(category);
   }, []);
 
-  // Memoize main callback functions
   const executeQuery = useCallback(
     async (endpoint: Endpoint) => {
       if (endpoint.requiresAuth) {
@@ -180,8 +174,6 @@ export default function CodeQueryApp() {
       </div>
 
       <div className="container mx-auto px-4 py-8 relative z-10">
-        <Header />
-
         <div className="bg-card border border-border rounded-lg p-3 sm:p-4 mb-6 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2 flex-grow sm:text-left text-center">
             <ShieldCheck className="h-5 w-5 text-green-500 flex-shrink-0" />
@@ -240,8 +232,6 @@ export default function CodeQueryApp() {
             </p>
           )}
         </div>
-
-        <Footer />
       </div>
     </div>
   );

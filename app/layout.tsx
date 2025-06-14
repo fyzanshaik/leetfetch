@@ -6,7 +6,8 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Analytics } from "@vercel/analytics/next";
-
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
@@ -51,7 +52,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <Header />
+
           {children}
+          <Footer />
+
           <Toaster />
         </ThemeProvider>
       </body>

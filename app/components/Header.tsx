@@ -5,9 +5,7 @@ import { ModeToggle } from "./mode-toggle";
 export default function Header() {
   return (
     <header className="py-16 text-center relative">
-      {" "}
-      <div className="absolute top-4 right-4 md:top-6 md:right-6">
-        {" "}
+      <div className="fixed top-4 right-4 md:top-6 md:right-6 z-10">
         <ModeToggle />
       </div>
       <div className="max-w-4xl mx-auto px-4">
