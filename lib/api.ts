@@ -9,18 +9,18 @@ import {
   Clock,
   Medal,
 } from "lucide-react";
-import { LucideIcon } from "lucide-react"; 
+import { LucideIcon } from "lucide-react";
 
 export interface Endpoint {
   id: string;
   name: string;
   description: string;
-  icon: LucideIcon; 
+  icon: LucideIcon;
   category: string;
-  query: string; 
-  requiresAuth: boolean; 
-  variables: Record<string, string | number>; 
-  graphql: string; 
+  query: string;
+  requiresAuth: boolean;
+  variables: Record<string, string | number>;
+  graphql: string;
 }
 
 export interface ErrorResponse {
@@ -28,7 +28,6 @@ export interface ErrorResponse {
   message: string;
   details: string;
 }
-
 
 export type SuccessfulApiResponse = Record<string, unknown>;
 
@@ -126,11 +125,11 @@ export const endpoints: Endpoint[] = [
       "Offers a detailed breakdown of a user's problem progress by difficulty level (Easy, Medium, Hard).",
     icon: TrendingUp,
     category: "Progress",
-    query: "userProfileUserQuestionProgress",
+    query: "userProfileUserQuestionProgressV2",
     requiresAuth: false,
     variables: { userSlug: "String!" },
-    graphql: `query userProfileUserQuestionProgress($userSlug: String!) {
-  userProfileUserQuestionProgress(userSlug: $userSlug) {
+    graphql: `query userProfileUserQuestionProgressV2($userSlug: String!) {
+  userProfileUserQuestionProgressV2(userSlug: $userSlug) {
     numAcceptedQuestions { difficulty count }
     numFailedQuestions { difficulty count }
     numUntouchedQuestions { difficulty count }
@@ -187,7 +186,7 @@ export const endpoints: Endpoint[] = [
     category: "Activity",
     query: "recentAcSubmissions",
     requiresAuth: false,
-    variables: { username: "String!", limit: "Int!" }, 
+    variables: { username: "String!", limit: "Int!" },
     graphql: `query recentAcSubmissions($username: String!, $limit: Int!) {
   recentAcSubmissionList(username: $username, limit: $limit) {
     id title titleSlug timestamp
@@ -203,7 +202,7 @@ export const endpoints: Endpoint[] = [
     category: "Challenge",
     query: "questionOfToday",
     requiresAuth: false,
-    variables: {}, 
+    variables: {},
     graphql: `query questionOfToday {
   activeDailyCodingChallengeQuestion {
     date
@@ -227,7 +226,7 @@ export const endpoints: Endpoint[] = [
     category: "Contest",
     query: "getContests",
     requiresAuth: false,
-    variables: {}, 
+    variables: {},
     graphql: `query getContests {
   allContests {
     title
