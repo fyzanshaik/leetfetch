@@ -11,8 +11,10 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import ReactMarkdown from "react-markdown";
-import { Download, BookText, Loader2, Copy } from "lucide-react";
+import { Download, BookText, Loader2, Copy, X } from "lucide-react";
 import { toast } from "sonner";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
 
 const ApiDocDialog: React.FC = () => {
   const [markdown, setMarkdown] = useState<string | null>(null);
@@ -89,87 +91,115 @@ const ApiDocDialog: React.FC = () => {
           API Documentation
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-4xl h-[90vh] flex flex-col">
-        <DialogHeader className="flex-shrink-0 pb-4 border-b border-border/30">
-          <DialogTitle className="text-2xl font-bold text-foreground flex items-center gap-2">
-            <BookText className="h-6 w-6 text-primary" />
-            LeetCode API Documentation
-          </DialogTitle>
-          <DialogDescription className="text-base text-muted-foreground">
-            Comprehensive guide to GraphQL endpoints with detailed schemas, 
-            variables, and example responses.
-          </DialogDescription>
-          
-          <div className="flex justify-end gap-3 mt-4">
-            <Button 
-              variant="outline" 
-              onClick={handleDownload}
-              className="hover:shadow-lg hover:scale-[1.02] transition-all duration-300 border-border/50 hover:border-primary/30"
-            >
-              <Download className="h-4 w-4 mr-2" />
-              Download as .md
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => {
-                if (markdown) {
-                  copyToClipboard(markdown);
-                  toast.success("Copied to Clipboard", {
-                    description: "Full documentation copied for LLM context.",
-                  });
-                } else {
-                  toast.error("Content not loaded", {
-                    description:
-                      "Cannot copy, documentation not available yet.",
-                  });
-                }
-              }}
-              className="hover:shadow-lg hover:scale-[1.02] transition-all duration-300 border-border/50 hover:border-primary/30"
-            >
-              <Copy className="h-4 w-4 mr-2" />
-              Copy for LLM
-            </Button>
+      <DialogContent className="max-w-6xl w-[95%] h-[90vh] flex flex-col bg-background/95 backdrop-blur-sm border-border/30 p-0">
+        <DialogHeader className="flex-row items-center justify-between p-4 border-b border-border/30">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
+              <BookText className="h-6 w-6 text-primary" />
+            </div>
+            <div>
+              <DialogTitle className="text-xl font-bold text-foreground">
+                LeetCode API Documentation
+              </DialogTitle>
+              <DialogDescription className="text-sm text-muted-foreground">
+                Comprehensive guide to GraphQL endpoints
+              </DialogDescription>
+            </div>
           </div>
+          <DialogTrigger asChild>
+            <Button variant="ghost" size="icon" className="rounded-full h-8 w-8">
+              <X className="h-4 w-4" />
+            </Button>
+          </DialogTrigger>
         </DialogHeader>
         
-        <div className="flex-1 overflow-y-auto min-h-0">
-          <div className="p-6 markdown-body">
-            {isLoading ? (
-              <div className="flex flex-col items-center justify-center h-48 text-muted-foreground">
-                <Loader2 className="h-8 w-8 animate-spin text-primary mb-4" />
-                <p className="text-lg font-medium animate-pulse">Loading documentation...</p>
-                <p className="text-sm text-muted-foreground/70 mt-1">
-                  Please wait while we fetch the API documentation
-                </p>
+        <div className="flex-1 grid grid-cols-1 md:grid-cols-3 min-h-0">
+          <div className="md:col-span-1 md:border-r border-border/30 p-4 overflow-y-auto">
+            <h3 className="text-lg font-semibold mb-3 text-foreground">Controls</h3>
+            <div className="space-y-3">
+              <Button 
+                variant="outline" 
+                onClick={handleDownload}
+                className="w-full justify-start gap-3 hover:bg-muted/50 transition-colors duration-200 border-border/50"
+              >
+                <Download className="h-4 w-4 text-primary" />
+                <span>Download as .md</span>
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  if (markdown) {
+                    copyToClipboard(markdown);
+                    toast.success("Copied to Clipboard", {
+                      description: "Full documentation copied for LLM context.",
+                    });
+                  } else {
+                    toast.error("Content not loaded", {
+                      description:
+                        "Cannot copy, documentation not available yet.",
+                    });
+                  }
+                }}
+                className="w-full justify-start gap-3 hover:bg-muted/50 transition-colors duration-200 border-border/50"
+              >
+                <Copy className="h-4 w-4 text-primary" />
+                <span>Copy for LLM</span>
+              </Button>
+            </div>
+            <Separator className="my-4" />
+            <h3 className="text-lg font-semibold mb-3 text-foreground">Status</h3>
+            <div className="space-y-2 text-sm">
+              <div className="flex items-center justify-between">
+                <span className="text-muted-foreground">Content</span>
+                {isLoading ? (
+                  <Badge variant="outline" className="animate-pulse">Loading...</Badge>
+                ) : error ? (
+                  <Badge variant="destructive">Error</Badge>
+                ) : (
+                  <Badge variant="secondary" className="bg-green-500/10 text-green-400 border-green-500/20">Loaded</Badge>
+                )}
               </div>
-            ) : error ? (
-              <div className="text-center">
-                <div className="inline-flex flex-col items-center justify-center p-6 bg-destructive/10 border border-destructive/20 rounded-lg">
-                  <p className="font-semibold text-destructive mb-2">Error loading document:</p>
-                  <p className="text-sm text-destructive/80 mb-4">{error}</p>
-                  <Button 
-                    variant="outline" 
-                    onClick={fetchMarkdown} 
-                    size="sm"
-                    className="border-destructive/30 text-destructive hover:bg-destructive/10"
-                  >
-                    Retry Load
-                  </Button>
-                </div>
-              </div>
-            ) : markdown ? (
-              <ReactMarkdown>{markdown}</ReactMarkdown>
-            ) : (
-              <div className="text-center text-muted-foreground h-48 flex items-center justify-center">
-                <div className="text-center">
-                  <BookText className="h-12 w-12 text-muted-foreground/50 mx-auto mb-3" />
-                  <p className="font-medium">No documentation loaded yet</p>
-                  <p className="text-sm text-muted-foreground/70 mt-1">
-                    Open the dialog to load the documentation
+            </div>
+          </div>
+          
+          <div className="md:col-span-2 overflow-y-auto">
+            <div className="p-6 markdown-body">
+              {isLoading ? (
+                <div className="flex flex-col items-center justify-center h-full text-muted-foreground pt-20">
+                  <Loader2 className="h-12 w-12 animate-spin text-primary mb-6" />
+                  <p className="text-xl font-medium animate-pulse">Loading documentation...</p>
+                  <p className="text-base text-muted-foreground/70 mt-2">
+                    Please wait while we fetch the API documentation
                   </p>
                 </div>
-              </div>
-            )}
+              ) : error ? (
+                <div className="text-center pt-20">
+                  <div className="inline-flex flex-col items-center justify-center p-8 bg-destructive/10 border border-destructive/20 rounded-lg">
+                    <p className="font-semibold text-destructive text-lg mb-3">Error loading document:</p>
+                    <p className="text-base text-destructive/80 mb-6">{error}</p>
+                    <Button 
+                      variant="outline" 
+                      onClick={fetchMarkdown} 
+                      className="border-destructive/30 text-destructive hover:bg-destructive/20"
+                    >
+                      Retry Load
+                    </Button>
+                  </div>
+                </div>
+              ) : markdown ? (
+                <ReactMarkdown>{markdown}</ReactMarkdown>
+              ) : (
+                <div className="text-center text-muted-foreground h-full flex items-center justify-center pt-20">
+                  <div className="text-center">
+                    <BookText className="h-16 w-16 text-muted-foreground/50 mx-auto mb-4" />
+                    <p className="font-medium text-xl">No documentation loaded yet</p>
+                    <p className="text-base text-muted-foreground/70 mt-2">
+                      Open the dialog to load the documentation
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </DialogContent>

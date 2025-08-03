@@ -270,4 +270,84 @@
       transform: translateY(-10px);
     }
   }
+
+  @keyframes flowRight {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(400%);
+    }
+  }
+
+  @keyframes circuitFlow {
+    0% {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(500%);
+      opacity: 0;
+    }
+  }
+
+  @keyframes circuitGlow {
+    0%, 100% {
+      opacity: 0.4;
+      box-shadow: 0 0 4px rgba(16, 185, 129, 0.3);
+    }
+    50% {
+      opacity: 1;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.8);
+    }
+  }
+
+  .circuit-flow {
+    @apply absolute top-0 left-0 h-full w-16;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
+    animation: circuitFlowHorizontal 1.5s ease-in-out infinite;
+    border-radius: 2px;
+    filter: blur(1px);
+  }
+
+  .circuit-flow.vertical {
+    @apply w-full h-16;
+    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.9), transparent);
+    animation: circuitFlowVertical 1.5s ease-in-out infinite;
+  }
+
+  @keyframes circuitFlowHorizontal {
+    0% { transform: translateX(-100%); opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { transform: translateX(300%); opacity: 0; }
+  }
+  
+  @keyframes circuitFlowVertical {
+    0% { transform: translateY(-100%); opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { transform: translateY(300%); opacity: 0; }
+  }
+
+  /* Circuit line styles */
+  .circuit-line {
+    transition: all 0.3s ease-out;
+    filter: drop-shadow(0 0 3px rgba(16, 185, 129, 0.3));
+  }
+
+  .circuit-line.active {
+    animation: circuitGlow 2s ease-in-out infinite;
+  }
+
+  .circuit-glow {
+    border-radius: 2px;
+    filter: blur(1px);
+  }
 }

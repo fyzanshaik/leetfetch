@@ -25,10 +25,10 @@ export const EndpointListDialog = memo(function EndpointListDialog({
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          size="sm"
-          className="hover:shadow-lg hover:scale-[1.02] transition-all duration-300 border-border/50 hover:border-primary/30 font-medium"
+          size="lg"
+          className="hover:shadow-lg hover:scale-[1.02] transition-all duration-300 h-12 px-6 text-base rounded-lg font-medium border-border/50 hover:border-primary/30"
         >
-          <ListIcon className="h-4 w-4 mr-2" />
+          <ListIcon className="h-5 w-5 mr-2" />
           View All Endpoints
         </Button>
       </DialogTrigger>

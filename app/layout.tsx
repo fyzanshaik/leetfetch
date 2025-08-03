@@ -5,7 +5,6 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/next";
-import Header from "./components/Header";
 import Footer from "./components/Footer";
 
 const montserrat = Montserrat({
@@ -35,6 +34,11 @@ export const metadata: Metadata = {
     description: "Interactive LeetCode GraphQL API explorer with modern design",
     type: "website",
   },
+  icons: {
+    icon: "/logo.svg",
+    shortcut: "/logo.svg",
+    apple: "/logo.svg",
+  },
 };
 
 export default function RootLayout({
@@ -48,7 +52,6 @@ export default function RootLayout({
       <body
         className={`${montserrat.className} antialiased bg-background text-foreground`}
       >
-        <Header />
         {children}
         <Footer />
         <Toaster />
