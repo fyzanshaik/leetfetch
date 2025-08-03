@@ -1,23 +1,23 @@
 // import { ReactScan } from "./components/ReactScan";
 import type React from "react";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/components/theme-provider";
 import { Analytics } from "@vercel/analytics/next";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-const inter = Inter({
+
+const montserrat = Montserrat({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-inter",
+  variable: "--font-montserrat",
 });
 
 export const metadata: Metadata = {
   title: "LeetFetch - LeetCode API Explorer",
   description:
-    "Comprehensive LeetCode GraphQL API documentation with interactive code snippets in multiple programming languages",
+    "Explore LeetCode's GraphQL API with a modern, minimalistic interface. Interactive testing, code generation, and real-time data visualization.",
   keywords: [
     "LeetCode",
     "API",
@@ -25,12 +25,14 @@ export const metadata: Metadata = {
     "Documentation",
     "Programming",
     "Coding",
+    "Developer Tools",
+    "Code Generator",
   ],
   authors: [{ name: "Faizan Shaik", url: "https://github.com/fyzanshaik" }],
   creator: "Faizan Shaik",
   openGraph: {
-    title: "CodeQuery - LeetCode API Explorer",
-    description: "Interactive LeetCode API documentation with code snippets",
+    title: "LeetFetch - LeetCode API Explorer",
+    description: "Interactive LeetCode GraphQL API explorer with modern design",
     type: "website",
   },
 };
@@ -41,24 +43,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={inter.variable}>
+    <html lang="en" suppressHydrationWarning className={`dark ${montserrat.variable}`}>
       {/* <ReactScan /> */}
       <body
-        className={`${inter.className} antialiased bg-background text-foreground`}
+        className={`${montserrat.className} antialiased bg-background text-foreground`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Header />
-
-          {children}
-          <Footer />
-
-          <Toaster />
-        </ThemeProvider>
+        <Header />
+        {children}
+        <Footer />
+        <Toaster />
       </body>
       <Analytics />
     </html>

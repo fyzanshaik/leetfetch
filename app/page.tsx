@@ -13,7 +13,7 @@ import UserInput from "./components/UserInput";
 import CategoryFilters from "./components/CategoryFilters";
 import EndpointCard from "./components/EndPointCard";
 import ApiDocDialog from "./components/ApiDocDialog";
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheck, Sprout } from "lucide-react";
 
 export default function CodeQueryApp() {
   const [username, setUsername] = useState("");
@@ -166,73 +166,86 @@ export default function CodeQueryApp() {
   }, []);
 
   return (
-    <div className="min-h-screen text-foreground relative overflow-hidden">
-      <div className="absolute inset-0 z-0 opacity-40 dark:opacity-20">
-        <div className="w-96 h-96 bg-primary/30 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob-page top-10 left-10 absolute"></div>
-        <div className="w-80 h-80 bg-accent/30 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob-page animation-delay-2000 absolute top-1/2 right-10 -translate-y-1/2"></div>
-        <div className="w-72 h-72 bg-orange-400/30 dark:bg-orange-800/30 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob-page animation-delay-4000 absolute bottom-10 left-1/4"></div>
-      </div>
-
-      <div className="container mx-auto px-4 py-8 relative z-10">
-        <div className="bg-card border border-border rounded-lg p-3 sm:p-4 mb-6 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 flex-grow sm:text-left text-center">
-            <ShieldCheck className="h-5 w-5 text-green-500 flex-shrink-0" />
-            <p className="text-sm text-muted-foreground leading-snug">
-              All API requests are proxied through a{" "}
-              <code className="bg-muted px-1 py-0.5 rounded text-xs font-mono">
-                secure
-              </code>{" "}
-              endpoint to{" "}
-              <code className="bg-muted px-1 py-0.5 rounded text-xs font-mono">
-                https://leetcode.com/graphql/
-              </code>
-              .
-            </p>
-          </div>
-          <div className="flex-shrink-0">
+    <div className="min-h-screen">
+      {/* Security Notice */}
+      <section className="py-8 px-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="glass-effect p-4 rounded-lg border border-border/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3 flex-grow text-center sm:text-left">
+              <ShieldCheck className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0" />
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                All API requests are securely proxied through our endpoint to{" "}
+                <code className="bg-muted px-2 py-1 rounded text-xs font-mono text-primary">
+                  https://leetcode.com/graphql/
+                </code>
+              </p>
+            </div>
             <ApiDocDialog />
           </div>
         </div>
+      </section>
 
-        <UserInput
-          username={username}
-          setUsername={handleUsernameChange}
-          displayedEndpoints={displayedEndpoints}
-          setShowLimitedEndpoints={handleShowLimitedEndpointsToggle}
-          showLimitedEndpoints={showLimitedEndpoints}
-        />
+      {/* User Input Section */}
+      <UserInput
+        username={username}
+        setUsername={handleUsernameChange}
+        displayedEndpoints={displayedEndpoints}
+        setShowLimitedEndpoints={handleShowLimitedEndpointsToggle}
+        showLimitedEndpoints={showLimitedEndpoints}
+      />
 
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold mb-4 text-primary">
-            Category Filters
-          </h2>
-          <CategoryFilters
-            categories={allCategories}
-            selectedCategory={selectedCategory}
-            setSelectedCategory={handleCategoryChange}
-          />
-        </div>
+      {/* Category Filters */}
+      <CategoryFilters
+        categories={allCategories}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={handleCategoryChange}
+      />
 
-        <div className="grid gap-8">
-          {filteredEndpoints.length > 0 ? (
-            filteredEndpoints.map((endpoint) => (
-              <EndpointCard
-                key={endpoint.id}
-                endpoint={endpoint}
-                username={username}
-                loading={loading}
-                responses={responses}
-                executeQuery={executeQuery}
-                copyToClipboard={copyToClipboard}
-              />
-            ))
-          ) : (
-            <p className="text-center text-muted-foreground text-lg py-10">
-              No endpoints found for the selected category.
+      {/* API Endpoints */}
+      <section className="py-12 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <Sprout className="h-6 w-6 text-primary" />
+              <h2 className="text-3xl font-bold text-foreground">
+                Available API Endpoints
+              </h2>
+            </div>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Explore {filteredEndpoints.length} carefully curated GraphQL endpoints 
+              to access LeetCode's data and insights
             </p>
-          )}
+          </div>
+
+          <div className="grid gap-8">
+            {filteredEndpoints.length > 0 ? (
+              filteredEndpoints.map((endpoint) => (
+                <EndpointCard
+                  key={endpoint.id}
+                  endpoint={endpoint}
+                  username={username}
+                  loading={loading}
+                  responses={responses}
+                  executeQuery={executeQuery}
+                  copyToClipboard={copyToClipboard}
+                />
+              ))
+            ) : (
+              <div className="text-center py-16">
+                <div className="max-w-md mx-auto">
+                  <Sprout className="h-12 w-12 text-muted-foreground/50 mx-auto mb-4" />
+                  <p className="text-lg text-muted-foreground font-medium mb-2">
+                    No endpoints found
+                  </p>
+                  <p className="text-sm text-muted-foreground/80">
+                    Try selecting a different category or show all endpoints
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

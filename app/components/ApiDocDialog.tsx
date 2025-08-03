@@ -83,24 +83,29 @@ const ApiDocDialog: React.FC = () => {
         <Button
           variant="outline"
           size="lg"
-          className="h-12 px-6 text-base rounded-full shadow-md hover:shadow-lg transition-shadow duration-300"
+          className="hover:shadow-lg hover:scale-[1.02] transition-all duration-300 h-12 px-6 text-base rounded-lg font-medium border-border/50 hover:border-primary/30"
         >
           <BookText className="h-5 w-5 mr-2" />
           API Documentation
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-4xl p-6 max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="text-2xl font-bold flex items-center gap-2">
+      <DialogContent className="sm:max-w-4xl h-[90vh] flex flex-col">
+        <DialogHeader className="flex-shrink-0 pb-4 border-b border-border/30">
+          <DialogTitle className="text-2xl font-bold text-foreground flex items-center gap-2">
             <BookText className="h-6 w-6 text-primary" />
             LeetCode API Documentation
           </DialogTitle>
-          <DialogDescription className="text-md text-muted-foreground mt-2">
-            A comprehensive guide to the GraphQL endpoints used in this
-            application.
+          <DialogDescription className="text-base text-muted-foreground">
+            Comprehensive guide to GraphQL endpoints with detailed schemas, 
+            variables, and example responses.
           </DialogDescription>
-          <div className="flex justify-end gap-2 mt-4">
-            <Button variant="secondary" onClick={handleDownload}>
+          
+          <div className="flex justify-end gap-3 mt-4">
+            <Button 
+              variant="outline" 
+              onClick={handleDownload}
+              className="hover:shadow-lg hover:scale-[1.02] transition-all duration-300 border-border/50 hover:border-primary/30"
+            >
               <Download className="h-4 w-4 mr-2" />
               Download as .md
             </Button>
@@ -119,33 +124,53 @@ const ApiDocDialog: React.FC = () => {
                   });
                 }
               }}
+              className="hover:shadow-lg hover:scale-[1.02] transition-all duration-300 border-border/50 hover:border-primary/30"
             >
               <Copy className="h-4 w-4 mr-2" />
-              Copy for LLM Context
+              Copy for LLM
             </Button>
           </div>
         </DialogHeader>
-        <div className="markdown-body mt-4">
-          {isLoading ? (
-            <div className="flex flex-col items-center justify-center h-48 text-muted-foreground">
-              <Loader2 className="h-8 w-8 animate-spin text-primary/70 mb-4" />
-              <p className="text-lg animate-pulse">Loading documentation...</p>
-            </div>
-          ) : error ? (
-            <div className="text-center text-destructive-foreground bg-destructive/10 p-4 rounded-md">
-              <p className="font-semibold">Error loading document:</p>
-              <p className="text-sm">{error}</p>
-              <Button variant="link" onClick={fetchMarkdown} className="mt-2">
-                Retry Load
-              </Button>
-            </div>
-          ) : markdown ? (
-            <ReactMarkdown>{markdown}</ReactMarkdown>
-          ) : (
-            <div className="text-center text-muted-foreground h-48 flex items-center justify-center">
-              <p>No documentation loaded yet. Open the dialog to load.</p>
-            </div>
-          )}
+        
+        <div className="flex-1 overflow-y-auto min-h-0">
+          <div className="p-6 markdown-body">
+            {isLoading ? (
+              <div className="flex flex-col items-center justify-center h-48 text-muted-foreground">
+                <Loader2 className="h-8 w-8 animate-spin text-primary mb-4" />
+                <p className="text-lg font-medium animate-pulse">Loading documentation...</p>
+                <p className="text-sm text-muted-foreground/70 mt-1">
+                  Please wait while we fetch the API documentation
+                </p>
+              </div>
+            ) : error ? (
+              <div className="text-center">
+                <div className="inline-flex flex-col items-center justify-center p-6 bg-destructive/10 border border-destructive/20 rounded-lg">
+                  <p className="font-semibold text-destructive mb-2">Error loading document:</p>
+                  <p className="text-sm text-destructive/80 mb-4">{error}</p>
+                  <Button 
+                    variant="outline" 
+                    onClick={fetchMarkdown} 
+                    size="sm"
+                    className="border-destructive/30 text-destructive hover:bg-destructive/10"
+                  >
+                    Retry Load
+                  </Button>
+                </div>
+              </div>
+            ) : markdown ? (
+              <ReactMarkdown>{markdown}</ReactMarkdown>
+            ) : (
+              <div className="text-center text-muted-foreground h-48 flex items-center justify-center">
+                <div className="text-center">
+                  <BookText className="h-12 w-12 text-muted-foreground/50 mx-auto mb-3" />
+                  <p className="font-medium">No documentation loaded yet</p>
+                  <p className="text-sm text-muted-foreground/70 mt-1">
+                    Open the dialog to load the documentation
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </DialogContent>
     </Dialog>

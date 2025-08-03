@@ -11,7 +11,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Info, User } from "lucide-react";
+import { Search, Leaf, Settings, Eye, EyeOff } from "lucide-react";
 import { Endpoint } from "@/lib/api";
 import { EndpointListDialog } from "./EndpointListDialog";
 
@@ -56,52 +56,80 @@ const UserInput = memo(function UserInput({
   );
 
   return (
-    <Card className="mb-8 border-2 border-orange-200 dark:border-orange-800">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <User className="h-5 w-5" />
-          Test Configuration
-        </CardTitle>
-        <CardDescription>
-          Enter a LeetCode username to test the API endpoints.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="flex flex-col md:flex-row gap-4 mb-4">
-          <Input
-            placeholder="fyzxnshxik"
-            value={localUsername}
-            onChange={handleInputChange}
-            className="flex-1"
-          />
-          <div className="flex gap-2 flex-wrap items-center">
-            <Badge variant="secondary" className="px-3 py-2">
-              {displayedEndpoints.length} Endpoints Available
-            </Badge>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowLimitedEndpoints(!showLimitedEndpoints)}
-              className="flex items-center gap-1"
-            >
-              <Info className="h-4 w-4" />
-              {showLimitedEndpoints
-                ? "Hide Limited Endpoints"
-                : "Show All Endpoints"}
-            </Button>
-            <EndpointListDialog endpoints={displayedEndpoints} />
-          </div>
-        </div>
-        <p className="text-sm text-muted-foreground mt-2">
-          Find your username at{" "}
-          <code className="font-mono text-xs">
-            leetcode.com/u/
-            <span className="text-orange-500">your-username</span>/
-          </code>
-          .
-        </p>
-      </CardContent>
-    </Card>
+    <section className="py-16 px-4">
+      <div className="max-w-4xl mx-auto">
+        <Card className="glass-effect nature-card-hover border-primary/10">
+          <CardHeader className="text-center pb-6">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Search className="h-5 w-5 text-primary" />
+              <CardTitle className="text-2xl font-semibold text-foreground">
+                API Testing Configuration
+              </CardTitle>
+            </div>
+            <CardDescription className="text-base text-muted-foreground max-w-2xl mx-auto">
+              Enter a LeetCode username to start exploring the GraphQL API endpoints. 
+              Discover user profiles, statistics, contest history, and more.
+            </CardDescription>
+          </CardHeader>
+          
+          <CardContent className="space-y-6">
+            {/* Username Input */}
+            <div className="space-y-3">
+              <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                <Leaf className="h-4 w-4 text-primary" />
+                LeetCode Username
+              </label>
+              <div className="relative">
+                <Input
+                  placeholder="fysxnshxik"
+                  value={localUsername}
+                  onChange={handleInputChange}
+                  className="pl-10 h-12 text-base border-border/50 focus:border-primary/50 focus:ring-primary/20"
+                />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Find your username at{" "}
+                <code className="bg-muted px-2 py-1 rounded text-primary font-mono">
+                  leetcode.com/u/your-username/
+                </code>
+              </p>
+            </div>
+
+            {/* Controls */}
+            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between p-4 bg-muted/30 rounded-lg border border-border/30">
+              <div className="flex items-center gap-3 flex-wrap">
+                <Badge 
+                  variant="secondary" 
+                  className="px-3 py-1.5 text-sm font-medium bg-primary/10 text-primary border-primary/20"
+                >
+                  <Settings className="h-3 w-3 mr-1.5" />
+                  {displayedEndpoints.length} Endpoints Available
+                </Badge>
+                
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowLimitedEndpoints(!showLimitedEndpoints)}
+                  className="nature-button text-sm font-medium border-border/50 hover:border-primary/30"
+                >
+                  {showLimitedEndpoints ? (
+                    <EyeOff className="h-4 w-4 mr-2" />
+                  ) : (
+                    <Eye className="h-4 w-4 mr-2" />
+                  )}
+                  {showLimitedEndpoints
+                    ? "Hide Limited"
+                    : "Show All"}
+                </Button>
+              </div>
+              
+              <EndpointListDialog endpoints={displayedEndpoints} />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </section>
   );
 });
 

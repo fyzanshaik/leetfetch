@@ -1,47 +1,58 @@
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, TrendingUp } from "lucide-react";
-import { ModeToggle } from "./mode-toggle";
+import { Code, Zap, Database } from "lucide-react";
 
 export default function Header() {
   return (
-    <header className="py-16 text-center relative">
-      <div className="fixed top-4 right-4 md:top-6 md:right-6 z-10">
-        <ModeToggle />
+    <header className="relative py-20 px-4 overflow-hidden">
+      {/* Subtle background decoration */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute top-10 left-10 w-32 h-32 bg-primary/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-20 right-20 w-40 h-40 bg-accent/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-10 left-1/3 w-28 h-28 bg-secondary/5 rounded-full blur-3xl"></div>
       </div>
-      <div className="max-w-4xl mx-auto px-4">
-        <h1 className="text-6xl md:text-7xl font-extrabold bg-gradient-to-r from-orange-500 to-red-600 bg-clip-text text-transparent mb-5 tracking-tight flex items-center justify-center gap-4">
-          <TrendingUp className="h-12 w-12 md:h-16 md:w-16 text-orange-500 animate-pulse" />
-          LeetFetch
-          <Sparkles className="h-12 w-12 md:h-16 md:w-16 text-yellow-400 animate-spin-slow" />
-        </h1>
-        <p className="text-lg md:text-xl text-slate-700 dark:text-slate-300 max-w-3xl mx-auto font-medium leading-relaxed">
-          Unlock LeetCode insights with an interactive API explorer. Get{" "}
-          <strong className="text-orange-500">code snippets</strong>, test{" "}
-          <strong className="text-red-500">GraphQL endpoints</strong>, and view{" "}
-          <strong className="text-blue-500">real-time data</strong>
+
+      <div className="max-w-4xl mx-auto text-center">
+        {/* Main title with tech icons */}
+        <div className="flex items-center justify-center gap-3 mb-6">
+          <Code className="h-8 w-8 text-primary animate-bounce-gentle" />
+          <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent tracking-tight">
+            LeetFetch
+          </h1>
+          <Database className="h-8 w-8 text-accent animate-bounce-gentle" style={{ animationDelay: '0.5s' }} />
+        </div>
+
+        {/* Subtitle */}
+        <p className="text-xl md:text-2xl text-muted-foreground font-medium mb-4 max-w-2xl mx-auto leading-relaxed">
+          Interactive LeetCode GraphQL API Explorer
         </p>
 
-        <div className="flex items-center justify-center gap-3 mt-8 flex-wrap">
+        {/* Description */}
+        <p className="text-base md:text-lg text-muted-foreground/80 max-w-3xl mx-auto mb-8 leading-relaxed">
+          Test endpoints, generate code snippets, and visualize data 
+          — all in a clean, modern interface
+        </p>
+
+        {/* Feature badges */}
+        <div className="flex items-center justify-center gap-3 flex-wrap">
           <Badge
             variant="outline"
-            className="px-4 py-2 text-md animate-badge-glow border-orange-300 dark:border-orange-700"
+            className="hover:shadow-lg hover:scale-[1.02] transition-all duration-300 px-4 py-2 text-sm font-medium border-primary/20 text-primary"
           >
+            <Zap className="h-4 w-4 mr-2" />
             Interactive Testing
           </Badge>
           <Badge
             variant="outline"
-            className="px-4 py-2 text-md animate-badge-glow border-blue-300 dark:border-blue-700"
+            className="hover:shadow-lg hover:scale-[1.02] transition-all duration-300 px-4 py-2 text-sm font-medium border-accent/20 text-accent-foreground"
           >
-            Multi-Language Snippets
+            <Code className="h-4 w-4 mr-2" />
+            Code Generation
           </Badge>
           <Badge
-            className="px-4 py-2 text-md animate-graphql-glow
-                       bg-gradient-to-r from-pink-500 to-purple-600 text-white
-                       border-none shadow-lg hover:shadow-xl
-                       dark:from-pink-600 dark:to-purple-700
-                       transition-all duration-300 ease-in-out"
+            className="hover:shadow-lg hover:scale-[1.02] transition-all duration-300 px-4 py-2 text-sm font-medium bg-gradient-to-r from-primary via-accent to-secondary text-white border-none shadow-md"
           >
-            GraphQL API
+            <Database className="h-4 w-4 mr-2" />
+            GraphQL Explorer
           </Badge>
         </div>
       </div>

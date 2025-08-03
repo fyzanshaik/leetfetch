@@ -1,67 +1,64 @@
-import { ExternalLink, Github, Twitter } from "lucide-react";
+import { ExternalLink, Github, Twitter, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function Footer() {
   return (
-    <footer className="mt-2 py-8 border-t border-border bg-background relative overflow-hidden">
-      <div className="absolute inset-0 z-0 opacity-10">
-        <div className="w-48 h-48 bg-primary/20 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob-small top-0 left-1/4"></div>
-        <div className="w-48 h-48 bg-accent/20 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob-small animation-delay-2000 bottom-0 right-1/4"></div>
-      </div>
-
-      <div className="container mx-auto px-4 text-center relative z-10">
-        <div className="flex flex-col items-center gap-2 mb-4">
-          <p className="text-md font-medium text-foreground">
-            Created with ❤️ by{" "}
+    <footer className="mt-16 py-8 border-t border-border/30 bg-muted/10">
+      <div className="max-w-4xl mx-auto px-4">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          {/* Left side - Creator info */}
+          <div className="flex items-center gap-2 text-sm">
+            <span className="text-muted-foreground">Built with</span>
+            <Heart className="h-4 w-4 text-red-500" />
+            <span className="text-muted-foreground">by</span>
             <a
               href="https://github.com/fyzanshaik"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary hover:text-primary/80 transition-colors cursor-pointer group font-semibold"
+              className="text-primary hover:text-primary/80 transition-colors font-medium"
             >
               @fyzanshaik
-              <span className="block h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
             </a>
-          </p>
-        </div>
+          </div>
 
-        <div className="flex justify-center gap-3 mb-6">
-          <Button
-            asChild
-            variant="ghost"
-            size="sm"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent/20 transition-all duration-200"
-          >
-            <a
-              href="https://github.com/fyzanshaik"
-              target="_blank"
-              rel="noopener noreferrer"
+          {/* Right side - Social Links */}
+          <div className="flex items-center gap-2">
+            <Button
+              asChild
+              variant="ghost"
+              size="sm"
+              className="h-8 px-3 text-muted-foreground hover:text-foreground"
             >
-              <Github className="h-4 w-4" />
-              <span className="text-sm font-medium">GitHub</span>
-              <ExternalLink className="h-3 w-3 opacity-70" />
-            </a>
-          </Button>
-          <Button
-            asChild
-            variant="ghost"
-            size="sm"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent/20 transition-all duration-200"
-          >
-            <a
-              href="https://x.com/fyzanshaik"
-              target="_blank"
-              rel="noopener noreferrer"
+              <a
+                href="https://github.com/fyzanshaik/leetfetch"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5"
+              >
+                <Github className="h-4 w-4" />
+                <span className="text-xs">GitHub</span>
+                <ExternalLink className="h-3 w-3 opacity-60" />
+              </a>
+            </Button>
+            
+            <Button
+              asChild
+              variant="ghost"
+              size="sm"
+              className="h-8 px-3 text-muted-foreground hover:text-foreground"
             >
-              <Twitter className="h-4 w-4" />
-              <span className="text-sm font-medium">Twitter</span>
-              <ExternalLink className="h-3 w-3 opacity-70" />
-            </a>
-          </Button>
-        </div>
-
-        <div className="pt-6 border-t border-border/50 text-xs text-muted-foreground">
-          © {new Date().getFullYear()} LeetFetch. All rights reserved.
+              <a
+                href="https://x.com/fyzanshaik"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5"
+              >
+                <Twitter className="h-4 w-4" />
+                <span className="text-xs">Twitter</span>
+                <ExternalLink className="h-3 w-3 opacity-60" />
+              </a>
+            </Button>
+          </div>
         </div>
       </div>
     </footer>
