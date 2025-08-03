@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { Endpoint } from "@/lib/api";
-import { List as ListIcon, Leaf, Lock } from "lucide-react";
+import { List as ListIcon, Lock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import React, { memo } from "react";
@@ -26,7 +26,7 @@ export const EndpointListDialog = memo(function EndpointListDialog({
         <Button
           variant="outline"
           size="sm"
-          className="nature-button border-border/50 hover:border-primary/30 font-medium"
+          className="hover:shadow-lg hover:scale-[1.02] transition-all duration-300 border-border/50 hover:border-primary/30 font-medium"
         >
           <ListIcon className="h-4 w-4 mr-2" />
           View All Endpoints
@@ -35,12 +35,10 @@ export const EndpointListDialog = memo(function EndpointListDialog({
       <DialogContent className="sm:max-w-[700px] max-h-[90vh] flex flex-col p-0">
         <div className="p-6 pb-0 flex-shrink-0">
           <DialogHeader>
-            <div className="flex items-center gap-2 mb-2">
-              <Leaf className="h-5 w-5 text-primary" />
-              <DialogTitle className="text-xl font-semibold">
-                API Endpoints Overview
-              </DialogTitle>
-            </div>
+            <DialogTitle className="text-xl font-semibold flex items-center gap-2">
+              <ListIcon className="h-5 w-5 text-primary" />
+              API Endpoints Overview
+            </DialogTitle>
             <DialogDescription className="text-base">
               A comprehensive overview of all available LeetCode GraphQL API endpoints,
               organized by category and functionality.
@@ -63,7 +61,7 @@ export const EndpointListDialog = memo(function EndpointListDialog({
                           {endpoint.name}
                         </h4>
                         {endpoint.requiresAuth && (
-                          <Badge variant="outline" className="text-xs px-2 py-0.5 border-amber-400/50 text-amber-600 dark:text-amber-400">
+                          <Badge variant="outline" className="text-xs px-2 py-0.5 border-amber-400/50 text-amber-600">
                             <Lock className="h-3 w-3 mr-1" />
                             Auth Required
                           </Badge>

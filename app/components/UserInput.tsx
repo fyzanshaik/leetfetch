@@ -11,7 +11,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Search, Leaf, Settings, Eye, EyeOff } from "lucide-react";
+import { Search, Settings, Eye, EyeOff } from "lucide-react";
 import { Endpoint } from "@/lib/api";
 import { EndpointListDialog } from "./EndpointListDialog";
 
@@ -58,17 +58,16 @@ const UserInput = memo(function UserInput({
   return (
     <section className="py-16 px-4">
       <div className="max-w-4xl mx-auto">
-        <Card className="glass-effect nature-card-hover border-primary/10">
+        <Card className="glass-effect hover:shadow-lg hover:scale-[1.02] transition-all duration-300 border-primary/10">
           <CardHeader className="text-center pb-6">
             <div className="flex items-center justify-center gap-2 mb-2">
               <Search className="h-5 w-5 text-primary" />
               <CardTitle className="text-2xl font-semibold text-foreground">
-                API Testing Configuration
+                Configuration
               </CardTitle>
             </div>
             <CardDescription className="text-base text-muted-foreground max-w-2xl mx-auto">
-              Enter a LeetCode username to start exploring the GraphQL API endpoints. 
-              Discover user profiles, statistics, contest history, and more.
+              Enter a LeetCode username to start testing GraphQL API endpoints
             </CardDescription>
           </CardHeader>
           
@@ -76,7 +75,7 @@ const UserInput = memo(function UserInput({
             {/* Username Input */}
             <div className="space-y-3">
               <label className="text-sm font-medium text-foreground flex items-center gap-2">
-                <Leaf className="h-4 w-4 text-primary" />
+                <Search className="h-4 w-4 text-primary" />
                 LeetCode Username
               </label>
               <div className="relative">
@@ -104,14 +103,14 @@ const UserInput = memo(function UserInput({
                   className="px-3 py-1.5 text-sm font-medium bg-primary/10 text-primary border-primary/20"
                 >
                   <Settings className="h-3 w-3 mr-1.5" />
-                  {displayedEndpoints.length} Endpoints Available
+                  {displayedEndpoints.length} Endpoints
                 </Badge>
                 
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => setShowLimitedEndpoints(!showLimitedEndpoints)}
-                  className="nature-button text-sm font-medium border-border/50 hover:border-primary/30"
+                  className="hover:shadow-lg hover:scale-[1.02] transition-all duration-300 text-sm font-medium border-border/50 hover:border-primary/30"
                 >
                   {showLimitedEndpoints ? (
                     <EyeOff className="h-4 w-4 mr-2" />
