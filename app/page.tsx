@@ -193,7 +193,6 @@ export default function CodeQueryApp() {
                     endpoint={endpoint}
                     username={username}
                     isLoading={loading[endpoint.id] ?? false}
-                    responses={responses}
                     executeQuery={executeQuery}
                     copyToClipboard={copyToClipboard}
                     isCurrentEndpoint={currentEndpoint === endpoint.id}
@@ -285,7 +284,7 @@ export default function CodeQueryApp() {
                         <Code className="h-12 w-12 mx-auto mb-4 opacity-50" />
                         <p className="font-medium mb-2 text-sm">No data yet</p>
                         <p className="text-xs text-muted-foreground/70">
-                          Click "Test" on any endpoint to see results here
+                          Click &quot;Test&quot; on any endpoint to see results here
                         </p>
                       </div>
                     )}

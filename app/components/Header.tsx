@@ -5,7 +5,6 @@ export default function Header() {
   return (
     <header className="relative py-8 px-4">
       <div className="max-w-4xl mx-auto text-center">
-        {/* Compact title */}
         <div className="flex items-center justify-center gap-2 mb-4">
           <Code className="h-6 w-6 text-primary" />
           <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent tracking-tight">
@@ -14,12 +13,10 @@ export default function Header() {
           <Database className="h-6 w-6 text-accent" />
         </div>
 
-        {/* Compact subtitle */}
         <p className="text-sm text-muted-foreground mb-4">
           Interactive LeetCode GraphQL API Explorer
         </p>
 
-        {/* Smaller badges */}
         <div className="flex items-center justify-center gap-2 flex-wrap">
           <Badge
             variant="outline"

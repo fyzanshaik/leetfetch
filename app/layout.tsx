@@ -1,4 +1,3 @@
-// import { ReactScan } from "./components/ReactScan";
 import type React from "react";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
@@ -48,7 +47,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning className={`dark ${montserrat.variable}`}>
-      {/* <ReactScan /> */}
       <body
         className={`${montserrat.className} antialiased bg-background text-foreground`}
       >

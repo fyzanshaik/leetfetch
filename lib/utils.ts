@@ -49,8 +49,7 @@ export const generateCodeSnippet = (
 
   switch (language) {
     case "typescript":
-      return `// TypeScript/JavaScript
-const response = await fetch('/api/leetcode', {
+      return `const response = await fetch('/api/leetcode', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
@@ -62,8 +61,7 @@ const data = await response.json();
 console.log(data);`;
 
     case "python":
-      return `# Python
-import requests
+      return `import requests
 import json
 
 url = "/api/leetcode"
@@ -74,8 +72,7 @@ data = response.json()
 print(json.dumps(data, indent=2))`;
 
     case "golang":
-      return `// Go
-package main
+      return `package main
 
 import (
     "bytes"
@@ -105,8 +102,7 @@ func main() {
 }`;
 
     case "cpp":
-      return `// C++ (using libcurl)
-#include <iostream>
+      return `#include <iostream>
 #include <string>
 #include <curl/curl.h>
 #include <json/json.h>

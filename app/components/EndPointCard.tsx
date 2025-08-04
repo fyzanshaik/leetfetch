@@ -19,7 +19,7 @@ import {
   Lock, 
   Loader2
 } from "lucide-react";
-import { Endpoint, ApiResponse } from "@/lib/api";
+import { Endpoint } from "@/lib/api";
 import { generateCodeSnippet } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
@@ -30,7 +30,6 @@ interface EndpointCardProps {
   endpoint: Endpoint;
   username: string;
   isLoading: boolean;
-  responses: Record<string, ApiResponse>;
   executeQuery: (endpoint: Endpoint) => Promise<void>;
   copyToClipboard: (text: string) => void;
   isCurrentEndpoint: boolean;
@@ -97,7 +96,6 @@ const EndpointCard = memo(function EndpointCard({
   endpoint,
   username,
   isLoading,
-  responses,
   executeQuery,
   copyToClipboard,
   isCurrentEndpoint,

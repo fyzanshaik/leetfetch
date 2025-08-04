@@ -6,7 +6,6 @@ export default function Footer() {
     <footer className="mt-16 py-8 border-t border-border/30 bg-muted/10">
       <div className="max-w-4xl mx-auto px-4">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          {/* Left side - Creator info */}
           <div className="flex items-center gap-2 text-sm">
             <span className="text-muted-foreground">Built with</span>
             <Heart className="h-4 w-4 text-red-500" />
@@ -21,7 +20,6 @@ export default function Footer() {
             </a>
           </div>
 
-          {/* Right side - Social Links */}
           <div className="flex items-center gap-2">
             <Button
               asChild
